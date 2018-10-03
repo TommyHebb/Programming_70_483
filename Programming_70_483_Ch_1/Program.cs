@@ -12,8 +12,10 @@ namespace Chapter1
             if (ConsoleTools.Run("Thread - Basic"))
             {
                 ConsoleTools.Devider();
-                Thread t = new Thread(new ThreadStart(ThreadMethod01));
-                t.Start();
+                // Would have used 'ThreadStart' here, but because the ThreadMethod gets used several times here, slightly different, 
+                // 'ParameterizedThreadStart' is used here (and further on), as to use params.
+                Thread t = new Thread(new ParameterizedThreadStart(ThreadMethod));
+                t.Start(1); // '1' is the param offered to the ThreadMethod.
                 for (int i = 0; i < 4; i++)
                 {
                     Console.WriteLine("Main thread: Do some work.");
@@ -25,11 +27,11 @@ namespace Chapter1
             if (ConsoleTools.Run("Thread - Background"))
             {
                 ConsoleTools.Devider();
-                Thread t = new Thread(new ThreadStart(ThreadMethod02));
+                Thread t = new Thread(new ParameterizedThreadStart(ThreadMethod));
                 t.IsBackground = false;
-                // true only makes sense if it's the last thing the console application has to do.
+                // 'true' only makes sense if it's the last thing the console application has to do.
                 // otherwise, the output will get written anyway.
-                t.Start();
+                t.Start(100);
                 ConsoleTools.Devider();
             }
             if (ConsoleTools.Run("Tasks"))
@@ -52,23 +54,15 @@ namespace Chapter1
             }
         }
 
-        public static void ThreadMethod01()
+        public static void ThreadMethod(object o)
         {
+            ConsoleTools.Devider('-');
             for (int i = 0; i < 10; i++)
             {
                 Console.WriteLine("ThreadProc: {0}", i);
-                Thread.Sleep(1);
+                Thread.Sleep((int)o);
             }
-        }
-        public static void ThreadMethod02()
-        {
-            ConsoleTools.Devider();
-            for (int i = 0; i < 10; i++)
-            {
-                Console.WriteLine("ThreadProc: {0}", i);
-                Thread.Sleep(100);
-            }
-            ConsoleTools.Devider();
+            ConsoleTools.Devider('-');
         }
 
     }
