@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using TommyTools;
@@ -230,8 +231,29 @@ namespace Chapter1
                 var numbers = Enumerable.Range(0, 10);
                 Parallel.ForEach(numbers, i => { Thread.Sleep(1000); });
             }
+            if (ConsoleTools.Run("17. Parallel - Using Parallel.Break"))
+            {
+                ParallelLoopResult result = Parallel.For(0, 1000, (int i, ParallelLoopState loopState) =>
+                {
+                    if (i == 500)
+                    {
+                        Console.WriteLine("Breaking loop");
+                        loopState.Break();
+                    }
+                    return;
+                });
+            }
+            if (ConsoleTools.Run("18. Async and Await - Simple example"))
+            {
+                // Uses static method DownloadContent
+                string result = DownloadContent().Result;
+                Console.WriteLine(result);
+            }
+            if (ConsoleTools.Run("19. Async and Await - "))
+            {
 
-            if (ConsoleTools.Run("Volgende is van pagina 26 !!!"))
+            }
+                if (ConsoleTools.Run("Volgende is van pagina 26 !!!"))
             {
                 var dict = new ConcurrentDictionary<string, int>();
                 dict["k1"] = 42;
@@ -249,6 +271,16 @@ namespace Chapter1
                 Thread.Sleep((int)o);
             }
             ConsoleTools.Devider('-');
+        }
+
+        public static async Task<string> DownloadContent()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                // Used by: "18. Async and Await - Simple example"
+                string result = await client.GetStringAsync("http://www.microsoft.com");
+                return result;
+            }
         }
 
     }
