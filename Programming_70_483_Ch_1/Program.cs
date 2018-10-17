@@ -10,6 +10,10 @@ namespace Chapter1
     {
         [ThreadStatic]
         public static int _field01; // Used by: "5. Thread - Using the ThreadStaticAttribute"
+        public static ThreadLocal<int> _field02 = new ThreadLocal<int>(() =>
+        {
+            return Thread.CurrentThread.ManagedThreadId; // Used by: "6. Thread - Using ThreadLocal<T>"
+        });
 
         public static void Main()
         {
@@ -87,6 +91,25 @@ namespace Chapter1
                     }
                 }).Start();
             }
+            if (ConsoleTools.Run("6. Thread - Using ThreadLocal<T>"))
+            {
+                new Thread(() =>
+                {
+                    for (int x = 0; x < _field02.Value; x++)
+                    {
+                        Console.WriteLine("Thread A: {0}", x);
+                    }
+                }).Start();
+
+                new Thread(() =>
+                {
+                    for (int x = 0; x < _field02.Value; x++)
+                    {
+                        Console.WriteLine("Thread B: {0}", x);
+                    }
+                }).Start();
+
+            }
 
             if (ConsoleTools.Run("Volgende is van pagina 26 !!!"))
             {
@@ -94,6 +117,7 @@ namespace Chapter1
                 dict["k1"] = 42;
                 int r1 = dict.AddOrUpdate("k1", 3, (s, i) => i * 2);
             }
+
         }
 
         public static void ThreadMethod(object o)
