@@ -108,7 +108,82 @@ namespace Chapter1
                         Console.WriteLine("Thread B: {0}", x);
                     }
                 }).Start();
+            }
+            if (ConsoleTools.Run("7. Thread - Queuing some work to the thread pool"))
+            {
+                ThreadPool.QueueUserWorkItem((s) =>
+                {
+                    Console.WriteLine("Working on a thread from threadpool");
+                });
+            }
+            if (ConsoleTools.Run("8. Tasks - How to start a new Task and wait until it’s finished"))
+            {
+                Task t = Task.Run(() =>
+                {
+                    for (int x = 0; x < 100; x++)
+                    {
+                        Console.Write('>');
+                    }
+                });
 
+                t.Wait();
+            }
+            if (ConsoleTools.Run("9. Tasks - If a Task should return a value"))
+            {
+                Task<int> t = Task.Run(() =>
+                {
+                    return 42;
+                });
+
+                Console.WriteLine(t.Result);
+            }
+            if (ConsoleTools.Run("10. Tasks - Add a continuation Task"))
+            {
+                Task<int> t = Task.Run(() =>
+                {
+                    return 42;
+                }).ContinueWith((i) =>
+                {
+                    return i.Result * 2;
+                });
+                Console.WriteLine(t.Result);
+            }
+            if (ConsoleTools.Run("11. Tasks - Scheduling different continuation Tasks"))
+            {
+                Task<int> t = Task.Run(() =>
+                {
+                    return 42;
+                });
+                t.ContinueWith((i) =>
+                {
+                    Console.WriteLine("Canceled");
+                }, TaskContinuationOptions.OnlyOnCanceled);
+                t.ContinueWith((i) =>
+                {
+                    Console.WriteLine("Faulted");
+                }, TaskContinuationOptions.OnlyOnFaulted);
+                var completedTask = t.ContinueWith((i) =>
+                {
+                    Console.WriteLine("Completed");
+                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                completedTask.Wait();
+            }
+            if (ConsoleTools.Run("12. Tasks - Attaching child Tasks to a parent Task"))
+            {
+                Task<Int32[]> parent = Task.Run(() =>
+                {
+                    var results = new Int32[3];
+                    new Task(() => results[0] = 0, TaskCreationOptions.AttachedToParent).Start();
+                    new Task(() => results[1] = 1, TaskCreationOptions.AttachedToParent).Start();
+                    new Task(() => results[2] = 2, TaskCreationOptions.AttachedToParent).Start();
+                    return results;
+                });
+                var finalTask = parent.ContinueWith(parentTask =>
+                {
+                    foreach (int i in parentTask.Result)
+                        Console.WriteLine(i);
+                });
+                finalTask.Wait();
             }
 
             if (ConsoleTools.Run("Volgende is van pagina 26 !!!"))
