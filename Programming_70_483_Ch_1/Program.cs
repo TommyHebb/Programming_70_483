@@ -20,7 +20,7 @@ namespace Chapter1
         {
             int _specificExerciseToRun = ConsoleTools.GetSpecificExerciseToRun();
 
-            if (_specificExerciseToRun == 1 && ConsoleTools.Run("1. Thread - Basic"))
+            if (_specificExerciseToRun == 1 || (_specificExerciseToRun == 0 && ConsoleTools.Run("1. Thread - Basic")))
             {
                 // Would have used 'ThreadStart' here, but because the ThreadMethod gets used several times here, slightly different, 
                 // 'ParameterizedThreadStart' is used here (and further on), as to use params.
@@ -33,7 +33,7 @@ namespace Chapter1
                 }
                 t.Join();
             }
-            if (_specificExerciseToRun == 2 && ConsoleTools.Run("2. Thread - Background"))
+            if (_specificExerciseToRun == 2 || (_specificExerciseToRun == 0 && ConsoleTools.Run("2. Thread - Background")))
             {
                 Thread t = new Thread(new ParameterizedThreadStart(ThreadMethod));
                 t.IsBackground = false;
@@ -41,7 +41,7 @@ namespace Chapter1
                 // otherwise, the output will get written anyway.
                 t.Start(100);
             }
-            if (_specificExerciseToRun == 3 && ConsoleTools.Run("3. Tasks"))
+            if (_specificExerciseToRun == 3 || (_specificExerciseToRun == 0 && ConsoleTools.Run("3. Tasks")))
             {
                 Task<int>[] tasks = new Task<int>[3];
                 tasks[0] = Task.Run(() => { Thread.Sleep(2000); return 1; });
@@ -57,7 +57,7 @@ namespace Chapter1
                     tasks = temp.ToArray();
                 }
             }
-            if (_specificExerciseToRun == 4 && ConsoleTools.Run("4. Tasks - Shared variable to stop a thread"))
+            if (_specificExerciseToRun == 4 || (_specificExerciseToRun == 0 && ConsoleTools.Run("4. Tasks - Shared variable to stop a thread")))
             {
                 bool stopped = false;
                 Thread t = new Thread(new ThreadStart(() =>
@@ -74,7 +74,7 @@ namespace Chapter1
                 stopped = true;
                 t.Join();
             }
-            if (_specificExerciseToRun == 5 && ConsoleTools.Run("5. Thread - Using the ThreadStaticAttribute"))
+            if (_specificExerciseToRun == 5 || (_specificExerciseToRun == 0 && ConsoleTools.Run("5. Thread - Using the ThreadStaticAttribute")))
             {
                 new Thread(() =>
                 {
@@ -93,7 +93,7 @@ namespace Chapter1
                     }
                 }).Start();
             }
-            if (_specificExerciseToRun == 6 && ConsoleTools.Run("6. Thread - Using ThreadLocal<T>"))
+            if (_specificExerciseToRun == 6 || (_specificExerciseToRun == 0 && ConsoleTools.Run("6. Thread - Using ThreadLocal<T>")))
             {
                 new Thread(() =>
                 {
@@ -111,14 +111,14 @@ namespace Chapter1
                     }
                 }).Start();
             }
-            if (_specificExerciseToRun == 7 && ConsoleTools.Run("7. Thread - Queuing some work to the thread pool"))
+            if (_specificExerciseToRun == 7 || (_specificExerciseToRun == 0 && ConsoleTools.Run("7. Thread - Queuing some work to the thread pool")))
             {
                 ThreadPool.QueueUserWorkItem((s) =>
                 {
                     Console.WriteLine("Working on a thread from threadpool");
                 });
             }
-            if (_specificExerciseToRun == 8 && ConsoleTools.Run("8. Tasks - How to start a new Task and wait until it’s finished"))
+            if (_specificExerciseToRun == 8 || (_specificExerciseToRun == 0 && ConsoleTools.Run("8. Tasks - How to start a new Task and wait until it’s finished")))
             {
                 Task t = Task.Run(() =>
                 {
@@ -130,7 +130,7 @@ namespace Chapter1
 
                 t.Wait();
             }
-            if (_specificExerciseToRun == 9 && ConsoleTools.Run("9. Tasks - If a Task should return a value"))
+            if (_specificExerciseToRun == 9 || (_specificExerciseToRun == 0 && ConsoleTools.Run("9. Tasks - If a Task should return a value")))
             {
                 Task<int> t = Task.Run(() =>
                 {
@@ -139,7 +139,7 @@ namespace Chapter1
 
                 Console.WriteLine(t.Result);
             }
-            if (_specificExerciseToRun == 10 && ConsoleTools.Run("10. Tasks - Add a continuation Task"))
+            if (_specificExerciseToRun == 10 || (_specificExerciseToRun == 0 && ConsoleTools.Run("10. Tasks - Add a continuation Task")))
             {
                 Task<int> t = Task.Run(() =>
                 {
@@ -150,7 +150,7 @@ namespace Chapter1
                 });
                 Console.WriteLine(t.Result);
             }
-            if (_specificExerciseToRun == 11 && ConsoleTools.Run("11. Tasks - Scheduling different continuation Tasks"))
+            if (_specificExerciseToRun == 11 || (_specificExerciseToRun == 0 && ConsoleTools.Run("11. Tasks - Scheduling different continuation Tasks")))
             {
                 Task<int> t = Task.Run(() => { return 42; });
                 t.ContinueWith((i) =>
@@ -167,7 +167,7 @@ namespace Chapter1
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
                 completedTask.Wait();
             }
-            if (_specificExerciseToRun == 12 && ConsoleTools.Run("12. Tasks - Attaching child Tasks to a parent Task"))
+            if (_specificExerciseToRun == 12 || (_specificExerciseToRun == 0 && ConsoleTools.Run("12. Tasks - Attaching child Tasks to a parent Task")))
             {
                 Task<Int32[]> parent = Task.Run(() =>
                 {
@@ -184,7 +184,7 @@ namespace Chapter1
                 });
                 finalTask.Wait();
             }
-            if (_specificExerciseToRun == 13 && ConsoleTools.Run("13. Tasks - Using a TaskFactory"))
+            if (_specificExerciseToRun == 13 || (_specificExerciseToRun == 0 && ConsoleTools.Run("13. Tasks - Using a TaskFactory")))
             {
                 Task<Int32[]> parent = Task.Run(() =>
                 {
@@ -202,7 +202,7 @@ namespace Chapter1
                 });
                 finalTask.Wait();
             }
-            if (_specificExerciseToRun == 14 && ConsoleTools.Run("14. Tasks - Using Task.WaitAll"))
+            if (_specificExerciseToRun == 14 || (_specificExerciseToRun == 0 && ConsoleTools.Run("14. Tasks - Using Task.WaitAll")))
             {
                 Task[] tasks = new Task[3];
                 tasks[0] = Task.Run(() => { Thread.Sleep(1000); Console.WriteLine("1"); return 1; });
@@ -210,7 +210,7 @@ namespace Chapter1
                 tasks[2] = Task.Run(() => { Thread.Sleep(1000); Console.WriteLine("3"); return 3; });
                 Task.WaitAll(tasks);
             }
-            if (_specificExerciseToRun == 15 && ConsoleTools.Run("15. Tasks - Using Task.WaitAny"))
+            if (_specificExerciseToRun == 15 || (_specificExerciseToRun == 0 && ConsoleTools.Run("15. Tasks - Using Task.WaitAny")))
             {
                 Task<int>[] tasks = new Task<int>[3];
                 tasks[0] = Task.Run(() => { Thread.Sleep(2000); return 1; });
@@ -226,13 +226,13 @@ namespace Chapter1
                     tasks = temp.ToArray();
                 }
             }
-            if (_specificExerciseToRun == 16 && ConsoleTools.Run("16. Parallel - Using Parallel.For and Parallel.Foreach"))
+            if (_specificExerciseToRun == 16 || (_specificExerciseToRun == 0 && ConsoleTools.Run("16. Parallel - Using Parallel.For and Parallel.Foreach")))
             {
                 Parallel.For(0, 10, i => { Thread.Sleep(1000); });
                 var numbers = Enumerable.Range(0, 10);
                 Parallel.ForEach(numbers, i => { Thread.Sleep(1000); });
             }
-            if (_specificExerciseToRun == 17 && ConsoleTools.Run("17. Parallel - Using Parallel.Break"))
+            if (_specificExerciseToRun == 17 || (_specificExerciseToRun == 0 && ConsoleTools.Run("17. Parallel - Using Parallel.Break")))
             {
                 ParallelLoopResult result = Parallel.For(0, 1000, (int i, ParallelLoopState loopState) =>
                 {
@@ -244,20 +244,20 @@ namespace Chapter1
                     return;
                 });
             }
-            if (_specificExerciseToRun == 18 && ConsoleTools.Run("18. Async and Await - Simple example"))
+            if (_specificExerciseToRun == 18 || (_specificExerciseToRun == 0 && ConsoleTools.Run("18. Async and Await - Simple example")))
             {
                 // Uses static method DownloadContent
                 string result = DownloadContent().Result;
                 Console.WriteLine(result);
             }
-            if (_specificExerciseToRun == 19 && ConsoleTools.Run("19. Async and Await - PLINQ - Using AsParallel"))
+            if (_specificExerciseToRun == 19 || (_specificExerciseToRun == 0 && ConsoleTools.Run("19. Async and Await - PLINQ - Using AsParallel")))
             {
                 var numbers = Enumerable.Range(0, 100000000);
                 var parallelResult = numbers.AsParallel()
                                             .Where(i => i % 2 == 0)
                                             .ToArray();
             }
-            if (_specificExerciseToRun == 20 && ConsoleTools.Run("20. Async and Await - PLINQ - Unordered parallel query"))
+            if (_specificExerciseToRun == 20 || (_specificExerciseToRun == 0 && ConsoleTools.Run("20. Async and Await - PLINQ - Unordered parallel query")))
             {
                 var numbers = Enumerable.Range(0, 10);
                 var parallelResult = numbers.AsParallel()
@@ -266,13 +266,21 @@ namespace Chapter1
                 foreach (int i in parallelResult)
                     Console.WriteLine(i);
             }
-            if (_specificExerciseToRun == 21 && ConsoleTools.Run("21. Async and Await - PLINQ - Ordered parallel query"))
+            if (_specificExerciseToRun == 21 || (_specificExerciseToRun == 0 && ConsoleTools.Run("21. Async and Await - PLINQ - Ordered parallel query")))
             {
                 var numbers = Enumerable.Range(0, 10);
                 var parallelResult = numbers.AsParallel().AsOrdered()
                                             .Where(i => i % 2 == 0)
                                             .ToArray();
                 foreach (int i in parallelResult)
+                    Console.WriteLine(i);
+            }
+            if (_specificExerciseToRun == 22 || (_specificExerciseToRun == 0 && ConsoleTools.Run("22. Async and Await - PLINQ - Making a parallel query sequential")))
+            {
+                var numbers = Enumerable.Range(0, 20);
+                var parallelResult = numbers.AsParallel().AsOrdered()
+                                            .Where(i => i % 2 == 0).AsSequential();
+                foreach (int i in parallelResult.Take(5))
                     Console.WriteLine(i);
             }
             /*
